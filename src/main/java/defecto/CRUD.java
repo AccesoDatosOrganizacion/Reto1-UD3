@@ -47,6 +47,14 @@ public class CRUD {
     }
 
     private static void createDatos(EntityManager em) {
+        // ¿Ya hay equipos?
+        Long count = em.createQuery("SELECT COUNT(t) FROM Team t", Long.class)
+                .getSingleResult();
+        if (count > 0) {
+            System.out.println("Los datos iniciales ya existen. No se insertan de nuevo.");
+            return;
+        }
+
         em.getTransaction().begin();
 
         try {
@@ -61,8 +69,8 @@ public class CRUD {
             sainz.setTeam(ferrari);
             verstappen.setTeam(redbull);
 
-            Race bahrain = new Race("GP Baréin", "Sakhir", LocalDate.of(2024, 3, 10));
-            Race jeddah = new Race("GP Arabia Saudí", "Jeddah", LocalDate.of(2024, 3, 17));
+            Race bahrain = new Race("GPBarein", "Sakhir", LocalDate.of(2024, 3, 10));
+            Race jeddah = new Race("GPArabia", "Jeddah", LocalDate.of(2024, 3, 17));
 
             // ManyToMany
             leclerc.getRaces().add(bahrain);
@@ -117,7 +125,7 @@ public class CRUD {
         Long id = scanner.nextLong();
         scanner.nextLine();
 
-        System.out.print("Nuevo número de carrera: ");
+        System.out.print("Nuevo número de Piloto: ");
         int nuevoNumero = scanner.nextInt();
         scanner.nextLine();
 
@@ -151,6 +159,17 @@ public class CRUD {
                     .setParameter("n", nombre)
                     .getSingleResult();
 
+            // === 1. Quitar la carrera de todos los pilotos ===
+            List<Driver> drivers = em.createQuery(
+                            "SELECT d FROM Driver d JOIN d.races rc WHERE rc.id = :id", Driver.class)
+                    .setParameter("id", r.getId())
+                    .getResultList();
+
+            for (Driver d : drivers) {
+                d.getRaces().remove(r);
+            }
+
+            // === 2. Ahora sí se puede eliminar la carrera ===
             em.remove(r);
 
             System.out.println("Carrera eliminada");
@@ -159,7 +178,7 @@ public class CRUD {
 
         } catch (Exception e) {
             em.getTransaction().rollback();
-            System.out.println("Error eliminando carrera");
+            System.out.println("Error eliminando carrera: " + e.getMessage());
         }
     }
 }

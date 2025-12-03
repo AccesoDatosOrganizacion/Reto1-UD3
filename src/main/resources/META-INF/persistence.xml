@@ -6,7 +6,8 @@
 
     <persistence-unit name="F1PU" transaction-type="RESOURCE_LOCAL">
 
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!-- <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider> -->
+        <!--<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
 
         <!-- Tus clases -->
         <class>defecto.Race</class>
@@ -23,9 +24,10 @@
             <!-- Crear tablas -->
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
 
-            <!-- Mostrar SQL -->
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
+            <!-- Mostrar SQL
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+            -->
 
         </properties>
 
