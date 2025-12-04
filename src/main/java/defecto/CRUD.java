@@ -16,7 +16,7 @@ public class CRUD {
 
         try {
             while (true) {
-                System.out.println("\n=== MENÚ CRUD FÓRMULA 1 ===");
+                System.out.println("\n\n=== MENÚ CRUD FÓRMULA 1 ===");
                 System.out.println("1. CREATE - Crear datos iniciales F1");
                 System.out.println("2. READ - Mostrar equipos, pilotos y carreras");
                 System.out.println("3. UPDATE - Actualizar piloto");
@@ -98,25 +98,25 @@ public class CRUD {
     }
 
     private static void readDatos(EntityManager em) {
-        System.out.println("\n=== ESCUDERÍAS ===");
+        System.out.print("\n=== ESCUDERÍAS ===");
 
         List<Team> teams = em.createQuery("SELECT t FROM Team t", Team.class).getResultList();
         for (Team t : teams) {
-            System.out.println("\nEquipo: " + t.getName() + " (" + t.getCountry() + ")");
+            System.out.print("\nEquipo: " + t.getName() + " (" + t.getCountry() + ")");
         }
 
-        System.out.println("\n=== PILOTOS ===");
+        System.out.print("\n\n=== PILOTOS ===");
         List<Driver> drivers = em.createQuery("SELECT d FROM Driver d", Driver.class).getResultList();
         for (Driver d : drivers) {
-            System.out.println("\nPiloto: " + d.getName() + " #" + d.getRaceNumber());
+            System.out.println("\nPiloto "+d.getId()+": " + d.getName() + " #" + d.getRaceNumber());
             System.out.println("Escudería: " + d.getTeam().getName());
-            System.out.println("Carreras: " + d.getRaces().size());
+            System.out.print("Carreras: " + d.getRaces().size());
         }
 
-        System.out.println("\n=== CARRERAS ===");
+        System.out.print("\n\n=== CARRERAS ===");
         List<Race> races = em.createQuery("SELECT r FROM Race r", Race.class).getResultList();
         for (Race r : races) {
-            System.out.println("\n" + r.getGrandPrix() + " - " + r.getLocation());
+            System.out.print("\n" + r.getGrandPrix() + " - " + r.getLocation());
         }
     }
 
