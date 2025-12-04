@@ -47,7 +47,7 @@ public class CRUD {
     }
 
     private static void createDatos(EntityManager em) {
-        // ¿Ya hay equipos?
+        //comprueba si los equipos ya existe
         Long count = em.createQuery("SELECT COUNT(t) FROM Team t", Long.class)
                 .getSingleResult();
         if (count > 0) {
@@ -159,7 +159,7 @@ public class CRUD {
                     .setParameter("n", nombre)
                     .getSingleResult();
 
-            // === 1. Quitar la carrera de todos los pilotos ===
+            //1. Elimina la carrera de todos los pilotos
             List<Driver> drivers = em.createQuery(
                             "SELECT d FROM Driver d JOIN d.races rc WHERE rc.id = :id", Driver.class)
                     .setParameter("id", r.getId())
@@ -169,7 +169,7 @@ public class CRUD {
                 d.getRaces().remove(r);
             }
 
-            // === 2. Ahora sí se puede eliminar la carrera ===
+            //2. Ahora se puede eliminar la carrera
             em.remove(r);
 
             System.out.println("Carrera eliminada");
